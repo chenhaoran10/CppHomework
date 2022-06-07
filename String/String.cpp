@@ -51,6 +51,23 @@ String::String(String&& _string) noexcept
 	m_string = buffer;
 	_string.reset();
 }
+String::String(const char* _string1, const char* _string2)
+{
+	m_length = strlen(_string1) +strlen(_string2);
+	m_string = new char[m_length + 1];
+	//copy参数
+	for (int i = 0; i < strlen(_string1); i++)
+	{
+		m_string[i] = _string1[i];
+	}
+	for (int i = strlen(_string1); i < m_length; i++)
+	{
+		m_string[i] = _string2[i- strlen(_string1)];
+	}
+	m_string[m_length] = '\0';
+}
+
+
 
 String::~String()
 {
@@ -100,7 +117,6 @@ char String::operator[](int _index) const
 char& String::operator[](int _index)
 {
 	//return char&,改变了原来的值
-
 	try
 	{
 		if (_index < 0 || _index >= m_length)
@@ -250,7 +266,6 @@ void String::replace(const char _target, const char _replacement)
 			}
 		}
 	}
-
 }
 
 void String::removeCharacter(char _target)

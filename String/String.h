@@ -13,6 +13,7 @@ public:
 	String(const char* _string);
 	//£¿
 	String(const String& _string);
+	String(const char* _string1, const char* _string2);
 	String(String&& _string)noexcept;
 	~String();
 

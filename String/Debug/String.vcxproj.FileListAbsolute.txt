@@ -1,1 +1,2 @@
 C:\Users\Administrator\source\repos\String\Debug\String.exe
+C:\Users\Administrator\Desktop\seaStar\CppHomework\String\Debug\String.exe
