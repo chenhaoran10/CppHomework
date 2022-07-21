@@ -1,5 +1,7 @@
 #pragma once
 #include<iostream>
+#include <stdio.h>  
+#include <stdlib.h> 
 #include<ostream>
 #include<vector>
 class String
@@ -22,7 +24,7 @@ public:
 	size_t length()const;
 	char* asCString()const;
 
-	//Cast to const char??
+	//Cast to const char
 	operator const char* ()const;
 
 	operator bool() const;
@@ -45,17 +47,17 @@ public:
 	String& operator+=(const char* _other);
 	String operator+(const String& _other)const;
 	String operator+(const char* _other)const;
-
-	//Stream Operator???
+	const char* makeString();
+	//Stream Operator
 	friend std::ostream& operator<<(std::ostream& _os, const String& _string);
-	//????
-	std::vector<String> split(const char _delimiter);
+	String* split(const char* _delimiter);
 	void replace(const char _target, const char _replacement);
 	void removeCharacter(char _target);
 	String toLowerCase()const;
-	String sub(int startIndex, int endIndex);
+	String& sub(int startIndex, int endIndex);
 	String& append(const char* _char);
-	int find(const char* _char);
+	int _find(const char* s, size_t startPos);
+	int find(const char* s);
 
 
 };

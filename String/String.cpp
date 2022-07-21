@@ -19,7 +19,6 @@ String::String(const char* _string)
 	if (!_string)
 	{
 		m_length = 0;
-		//?
 		m_string = new char[0];
 	}
 	else
@@ -34,7 +33,6 @@ String::String(const char* _string)
 
 String::String(const String& _string)
 {
-	//?
 	char* buffer = new char[_string.m_length + 1];
 	std::copy(_string.m_string, _string.m_string + _string.m_length, buffer);
 	buffer[_string.m_length] = '\0';
@@ -83,7 +81,6 @@ void String::reset()
 
 size_t String::length() const
 {
-	//?
 	return m_length;
 }
 
@@ -107,7 +104,6 @@ String::operator bool() const
 
 char String::operator[](int _index) const
 {
-	//?
 	if (_index < 0 || _index >= m_length)
 	{
 		throw std::out_of_range("String index out of bounds!");
@@ -147,8 +143,6 @@ bool String::operator==(const char* _chars) const
 
 String& String::operator=(const String& _other)
 {
-	// TODO: insert return statement here
-	//?
 	if (this != &_other)
 	{
 		char* buffer = new char[_other.m_length + 1];
@@ -157,14 +151,11 @@ String& String::operator=(const String& _other)
 		m_length = _other.m_length;
 		delete[] buffer;
 	}
-	//??
 	return *this;
 }
 
 String& String::operator=(String&& _other) noexcept
 {
-	//??
-	// TODO: insert return statement here
 	if (this != &_other)
 	{
 		const auto buffer = _other.m_string;
@@ -173,14 +164,11 @@ String& String::operator=(String&& _other) noexcept
 		m_length = _other.m_length;
 		_other.reset();
 	}
-	//?
 	return *this;
 }
 
 String& String::operator+=(const String& _other)
 {
-	// TODO: insert return statement here
-	//?
 	if (this != &_other)
 	{
 		auto totalLength = m_length + _other.m_length;
@@ -197,7 +185,6 @@ String& String::operator+=(const String& _other)
 
 String& String::operator+=(const char* _other)
 {
-	// TODO: insert return statement here
 	const auto charLength = strlen(_other);
 	const auto totalLength = m_length + charLength;
 	char* buffer = new char[totalLength + 1];
@@ -235,23 +222,41 @@ String String::operator+(const char* _other) const
 	return String(buffer);
 }
 
-std::vector<String> String::split(const char _delimiter)
+String* String::split(const char* _delimiter)
 {
-	//???
-	std::vector<String> result;
-	char* t;
-	char* pch = strtok_s(m_string, &_delimiter,&t);
-	while (pch != nullptr)
+	int idx = 0;
+	std::vector<int> idxArray;
+	int ansIdx;
+	while (true)
 	{
-		result.push_back(String{ pch });
-		pch = strtok_s(nullptr, &_delimiter, &t);
+		//_find找到第一个_delimiter的位置，找不到直接跳出循环
+		ansIdx = _find(_delimiter, idx);
+		if (ansIdx > -1)
+		{
+			idxArray.push_back(ansIdx);
+			idx = ansIdx + 1;
+		}
+		else
+		{
+			break;
+		}
 	}
-	return result;
+	String* stringList = (String*)calloc(idxArray.size()+1,sizeof(String));
+	auto strLength = strlen(_delimiter);
+	idx = 0;
+	for (int i = 0; i < idxArray.size(); i++)
+	{
+		//vector.at(i)==vector[i],但较为安全
+		// 前闭后开返回一个string
+		stringList[i] = this->sub(idx, idxArray.at(i));
+		idx = idxArray.at(i) + strLength;
+	}
+	return stringList;
+
 }
 
 void String::replace(const char _target, const char _replacement)
 {
-	//?
 	for (int i = 0; i < m_length; i++)
 	{
 		if (m_string[i] == _target)
@@ -284,13 +289,14 @@ String String::toLowerCase() const
 	return buffer;
 }
 
-String String::sub(int startIndex, int endIndex)
+String& String::sub(int startIndex, int endIndex)
 {
 	char* buffer = new char[endIndex-startIndex + 1];
 	//copy 左闭右开
 	std::copy(m_string+ startIndex, m_string + endIndex, buffer);
 	buffer[endIndex - startIndex] = '\0';
-	return String(buffer);
+	auto ans = new String(buffer);
+	return *ans;
 }
 
 String& String::append(const char* _char)
@@ -307,14 +313,23 @@ String& String::append(const char* _char)
 	return *this;
 }
 
-int String::find(const char* _char)
+int String::_find(const char* s, size_t startPos)
 {
-	const auto charLength = strlen(_char);
-	for (int i = 0; i < m_length; i++)
+	auto selfLen = this->length();
+	auto len = strlen(s);
+	if ((startPos + len) > selfLen)
 	{
-		for (int j = 0; j < charLength; j++)
+		return -1;
+	}
+	for (size_t i = startPos; i < selfLen; i++)
+	{
+		for (size_t j = 0; j < len; j++)
 		{
-			if (*(m_string +i+ j) == _char[j])
+			if (s[j] != this->m_string[i + j])
+			{
+				break;
+			}
+			if (j == len)
 			{
 				return i;
 			}
@@ -322,11 +337,16 @@ int String::find(const char* _char)
 	}
 	return -1;
 }
-
+int String::find(const char* s)
+{
+	return this->_find(s, 0);
+}
+const char* String::makeString()
+{
+	return this->m_string;
+};
 std::ostream& operator<<(std::ostream& _os, const String& _string)
 {
-	// TODO: insert return statement here
-	//?
 	_os << _string.m_string;
 	return _os;
 }

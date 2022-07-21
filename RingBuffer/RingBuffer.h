@@ -15,12 +15,12 @@ private:
 	void expand();
 	void reduce();
 public:
-	RingBuffer(const int& size);
+	RingBuffer(int size);
 	~RingBuffer();
 	bool isEmpty();
 	bool isFull();
 	void push(const char* data,int size);
-	void pop(int count);
+	void pop(char* data,int count);
 	int length();
 
 };

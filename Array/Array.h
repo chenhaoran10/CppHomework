@@ -99,6 +99,13 @@ public:
 		if (_size > size)
 		{
 			size = _size;
+			DataType* temp = new DataType[size];
+			for (int i = 0; i < len; i++)
+			{
+				temp[i] = val[i];
+			}
+			delete[]val;
+			val = temp;
 		}
 	}
 	void push(const DataType& num)

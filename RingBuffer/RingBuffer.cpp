@@ -1,8 +1,11 @@
 #include "RingBuffer.h"
-
-RingBuffer::RingBuffer(const int& _capacity):m_size(0),begin(0),end(0),capacity(_capacity)
+RingBuffer::RingBuffer(int size)
 {
-	data[_capacity];
+	this->m_size = 0;
+	this->begin = 0;
+	this->end = 0;
+	this->capacity = size;
+	this->data = (char*)malloc(size * (sizeof(RingBuffer)));
 }
 RingBuffer::~RingBuffer()
 {
@@ -47,20 +50,21 @@ void RingBuffer::push(const char* input,int size)
 	m_size += size;
 }
 
-void RingBuffer::pop(int count)
+void RingBuffer::pop(char* data,int count)
 {
 	if (count <= 0)
 		return;
 	int pop_size = min(count, m_size);
-	if (pop_size + begin <= capacity)
+	if (pop_size + begin <= this->capacity)
 	{
-		begin = (begin + pop_size) % capacity;
+		memcpy(data, this->data+begin, count);
 	}
 	else
 	{
-		int size_t = capacity - begin;
-		begin = pop_size - size_t;
+		memcpy(data, this->data+this->begin, this->capacity-count);
+		memcpy(data+ this->capacity- this->begin, this->data, count - this->capacity+this->begin);
 	}
+	begin = (begin + pop_size) % capacity;
 	m_size -= pop_size;
 	reduce();
 }
