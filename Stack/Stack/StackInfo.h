@@ -1,4 +1,5 @@
 #pragma once
+#include <cstring>
 class Test;
 class StackInfo
 {
@@ -9,11 +10,15 @@ public:
     template<typename T>
     void push(const T& val)
     {
-        stack[pos++] = (void*)&val;    
+        //解决右值问题
+        T* ptr = new T();
+        *ptr = val; 
+        stack[pos++] = (void*)ptr;    
     }
     template<typename T>
     void pop(T& val)
     {
          val=*(T*)(stack[--pos]);
     }
+   
 };

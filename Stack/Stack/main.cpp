@@ -1,4 +1,4 @@
-#include <cstring>
+
 #include <cassert>
 #include"StackInfo.h"
 #include "iostream"
@@ -37,8 +37,7 @@ void test2()
     Test t1;
     StackInfo stack;
     stack.push(111);
-    stack.push<string>("asdfasdfasdf");
-
+    stack.push<string>("asdfaseaw");
     Test t2;
     t2.p3 = "t2teststring";
     stack.push(t2);
