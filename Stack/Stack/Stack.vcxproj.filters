@@ -20,9 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StackItem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StackInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
