@@ -10,10 +10,15 @@ public:
     template<typename T>
     void push(const T& val)
     {
+        stack[pos++] = (void*)&val;    
+    }
+    template<typename T>
+    void push(const T&& val)
+    {
         //解决右值问题
         T* ptr = new T();
         *ptr = val; 
-        stack[pos++] = (void*)ptr;    
+        stack[pos++] = (void*)ptr;
     }
     template<typename T>
     void pop(T& val)
